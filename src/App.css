@@ -1,38 +1,119 @@
+/* src/App.css */
+
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
+
+body {
+  background-color: #f8f8f8;
+  color: #333;
+}
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+  width: 100%;
   min-height: 100vh;
+  background-color: #f0f0f0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  padding: 20px;
 }
 
-.App-link {
-  color: #61dafb;
+/* Common Layout Styles */
+.container {
+  width: 100%;
+  max-width: 1200px; /* Maximum width for large screens */
+  margin: 0 auto;
+  padding: 20px; /* General padding for content */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Button Styles */
+button {
+  cursor: pointer;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #555;
+}
+
+/* Form Styling */
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+input[type="number"] {
+  width: 60%;
+}
+
+/* Header Styles */
+h1, h2, h3 {
+  font-family: 'Arial', sans-serif;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Responsive Layout for Medium and Small Screens */
+@media (max-width: 1200px) {
+  .container {
+    padding: 15px; /* Reduced padding on larger screens */
   }
-  to {
-    transform: rotate(360deg);
+
+  .App {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 10px; /* Even smaller padding for tablets and below */
+  }
+
+  .App {
+    padding: 10px; /* Mobile screen padding */
+  }
+
+  input[type="number"] {
+    width: 100%; /* Full width for inputs on smaller devices */
+  }
+
+  button {
+    width: 100%; /* Full width buttons for small screens */
+    padding: 12px 0; /* Larger touch area for buttons */
+  }
+}
+
+/* Mobile (Phone) Friendly */
+@media (max-width: 480px) {
+  h1, h2, h3 {
+    font-size: 20px; /* Smaller font size for phone screens */
+  }
+
+  .container {
+    padding: 8px; /* Even smaller padding for mobile */
+  }
+
+  .App {
+    padding: 5px; /* Minimum padding for phone screens */
+  }
+
+  input, textarea {
+    padding: 10px; /* Less padding for form elements on mobile */
+  }
+
+  button {
+    padding: 15px; /* Ensure buttons are easy to click on small screens */
   }
 }

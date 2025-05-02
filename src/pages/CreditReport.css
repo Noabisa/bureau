@@ -1,0 +1,125 @@
+/* CreditReport.css */
+
+/* General Container Styles */
+.credit-report-container {
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    max-width: 1200px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .credit-report {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+  }
+  
+  /* Section Heading Styles */
+  .credit-report h1,
+  .credit-report h2 {
+    margin: 0;
+    padding: 0;
+    color: #333;
+  }
+  
+  .credit-report h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .credit-report h2 {
+    font-size: 22px;
+    margin-top: 20px;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 5px;
+  }
+  
+  /* Paragraph Styles */
+  .credit-report p {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+  }
+  
+  /* Table Styles */
+  .report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #fff;
+  }
+  
+  .report-table th,
+  .report-table td {
+    padding: 12px;
+    text-align: center;
+    font-size: 16px;
+  }
+  
+  .report-table th {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+  }
+  
+  .report-table td {
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .report-table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  /* Highlight Rows */
+  .report-table td.highlight {
+    background-color: #ffe9e9;
+  }
+  
+  /* Print Button */
+  .print-btn {
+    display: inline-block;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+  }
+  
+  .print-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .credit-report-container {
+      padding: 15px;
+    }
+  
+    .credit-report h1 {
+      font-size: 24px;
+    }
+  
+    .credit-report h2 {
+      font-size: 20px;
+    }
+  
+    .report-table th,
+    .report-table td {
+      font-size: 14px;
+      padding: 8px;
+    }
+  
+    .print-btn {
+      font-size: 14px;
+      padding: 8px 15px;
+    }
+  }
+  

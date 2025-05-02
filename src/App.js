@@ -1,24 +1,39 @@
-import logo from './logo.svg';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import ConsumerDashboard from './pages/ConsumerDashboard';
+import LenderDashboard from './pages/LenderDashboard';
+import Login from './pages/LoginForm';
+import Register from './pages/RegisterForm';
+import HomePage from './pages/HomePage';
+import PrivateRoute from './pages/PrivateRoute';
 import './App.css';
+
+// New feature components
+import CreditReport from './pages/CreditReport';
+import CreditChart from './pages/CreditChart';
+import PayLoan from './pages/PayLoan';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        {/* ✅ Public Routes */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
+        {/* ✅ Protected Routes */}
+        <Route element={<PrivateRoute />}>
+          <Route path="/consumer/dashboard/*" element={<ConsumerDashboard />} />
+          <Route path="/lender/dashboard/*" element={<LenderDashboard />} />
+          <Route path="/consumer/credit-report" element={<CreditReport />} />
+          <Route path="/consumer/credit-chart" element={<CreditChart />} />
+          <Route path="/consumer/pay-loan" element={<PayLoan />} />
+        </Route>
+
+        {/* ✅ Redirect all unknown routes to home */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Router>
   );
 }
 

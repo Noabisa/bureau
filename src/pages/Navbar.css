@@ -1,0 +1,172 @@
+/* Navbar.css */
+:root {
+    --primary: #4361ee;
+    --primary-dark: #3a56d4;
+    --secondary: #f8f9fa;
+    --dark: #1b263b;
+    --light: #ffffff;
+    --text-dark: #2d3748;
+    --text-light: #f7fafc;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --font-base: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  }
+  
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--dark);
+    color: var(--text-light);
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    font-family: var(--font-base);
+  }
+  
+  .navbar-brand .logo-link {
+    text-decoration: none;
+    color: #f7fafc;
+    color: var(--text-light);
+  }
+  
+  .navbar-brand h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  
+  .dashboard-links {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .nav-link {
+    color: var(--text-light);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.1rem;
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+  }
+  
+  .nav-text {
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+  
+  .btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border: none;
+    font-size: 1.1rem;
+  }
+  
+  .login-btn {
+    background-color: var(--primary);
+    color: var(--text-light);
+  }
+  
+  .login-btn:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+  }
+  
+  .btn-outline {
+    background-color: transparent;
+    border: 2px solid var(--text-light);
+    color: var(--text-light);
+  }
+  
+  .btn-outline:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+  }
+  
+  .logout-btn {
+    background-color: transparent;
+    border: 2px solid #e63946;
+    color: #e63946;
+    font-weight: 600;
+  }
+  
+  .logout-btn:hover {
+    background-color: rgba(230, 57, 70, 0.15);
+  }
+  
+  /* Font Awesome icons */
+  .fas {
+    font-size: 1.2rem;
+  }
+  
+  /* Accessibility improvements */
+  a:focus, button:focus {
+    outline: 3px solid var(--primary);
+    outline-offset: 2px;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .navbar {
+      padding: 1rem;
+      flex-direction: column;
+      align-items: stretch;
+    }
+  
+    .navbar-brand h1 {
+      font-size: 1.5rem;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+  
+    .nav-links {
+      flex-direction: column;
+      gap: 0.75rem;
+      width: 100%;
+    }
+  
+    .dashboard-links {
+      flex-direction: column;
+      gap: 0.75rem;
+      width: 100%;
+    }
+  
+    .nav-link, .btn {
+      padding: 0.75rem;
+      font-size: 1rem;
+      width: 100%;
+      justify-content: center;
+    }
+  
+    .nav-text {
+      font-size: 1rem;
+    }
+  }
+  h1 {
+    color: #f8f9fa;
+  }
