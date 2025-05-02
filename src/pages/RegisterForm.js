@@ -37,7 +37,7 @@ const RegisterForm = () => {
         </select>
         <button type="submit">Register</button>
       </form>
-      <p>Already have an account? <a href="/login">Login</a></p>
+      <p><span style={{ color: 'black' }}>Already have an account?</span> <a href="/login">Login</a></p>
     </div>
   );
 };

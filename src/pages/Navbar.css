@@ -3,9 +3,9 @@
     --primary: #4361ee;
     --primary-dark: #3a56d4;
     --secondary: #f8f9fa;
-    --dark: #1b263b;
+    --dark: #2405af;
     --light: #ffffff;
-    --text-dark: #2d3748;
+    --text-dark: #56aca7;
     --text-light: #f7fafc;
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     --font-base: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -27,10 +27,11 @@
   
   .navbar-brand .logo-link {
     text-decoration: none;
-    color: #f7fafc;
-    color: var(--text-light);
+    color: #0b95f1;
   }
-  
+  h1 {
+    color: #f8f9fa;
+  }
   .navbar-brand h1 {
     margin: 0;
     font-size: 1.8rem;

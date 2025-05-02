@@ -65,7 +65,7 @@ const LoginForm = () => {
         <br />
         <button type="submit">Login</button>
       </form>
-      <p>Don't have an account? <a href="/register">Register</a></p>
+      <p><span style={{ color: 'black' }}>Don't have an account?</span> <a href="/register">Register</a></p>
     </div>
   );
 };
