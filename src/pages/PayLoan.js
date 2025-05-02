@@ -18,8 +18,9 @@ const PayLoan = () => {
   const fetchLoans = async () => {
     try {
       const res = await axios.get('/api/consumer/loans');
-      const unpaidLoans = res.data.loans.filter(loan => loan.status !== 'paid');
-      setLoans(unpaidLoans);
+      // Filter out only the loans that are not 'pending'
+      const validLoans = res.data.loans.filter(loan => loan.status !== 'pending' && loan.status !== 'paid');
+      setLoans(validLoans);
     } catch (err) {
       console.error('Error fetching loans:', err);
       setMessage('❌ Failed to load your loans.');
