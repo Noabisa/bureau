@@ -124,11 +124,6 @@ const LenderDashboard = () => {
     { name: 'Due', value: paymentStats.remaining }
   ];
 
-  // Helper function to ensure values are valid numbers
-  const formatMoney = (value) => {
-    return (value && !isNaN(value)) ? value.toFixed(2) : '0.00';
-  };
-
   return (
     <div className="lender-dashboard">
       <header className="dashboard-header">
@@ -212,10 +207,10 @@ const LenderDashboard = () => {
         <div className="summary-grid">
           <table className="summary-table">
             <tbody>
-              <tr><td><strong>Total Loan Amount:</strong></td><td>${formatMoney(paymentStats.totalAmount)}</td></tr>
-              <tr><td><strong>Total Interest:</strong></td><td>${formatMoney(paymentStats.totalInterest)}</td></tr>
-              <tr><td><strong>Total Paid:</strong></td><td>${formatMoney(paymentStats.totalPaid)}</td></tr>
-              <tr><td><strong>Remaining Due:</strong></td><td>${formatMoney(paymentStats.remaining)}</td></tr>
+              <tr><td><strong>Total Loan Amount:</strong></td><td>${paymentStats.totalAmount.toFixed(2)}</td></tr>
+              <tr><td><strong>Total Interest:</strong></td><td>${paymentStats.totalInterest.toFixed(2)}</td></tr>
+              <tr><td><strong>Total Paid:</strong></td><td>${paymentStats.totalPaid.toFixed(2)}</td></tr>
+              <tr><td><strong>Remaining Due:</strong></td><td>${paymentStats.remaining.toFixed(2)}</td></tr>
             </tbody>
           </table>
 

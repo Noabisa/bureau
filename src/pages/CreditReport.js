@@ -3,72 +3,43 @@ import axios from '../services/api';
 import html2pdf from 'html2pdf.js';
 import './CreditReport.css';
 
-import {
-  PieChart, Pie, Cell, Tooltip,
-  BarChart, Bar, XAxis, YAxis, Legend
-} from 'recharts';
-
 const CreditReport = () => {
   const [loans, setLoans] = useState([]);
   const [score, setScore] = useState(null);
   const [repayments, setRepayments] = useState([]);
-  const [userInfo, setUserInfo] = useState({ name: '', email: '' });
-  const [lastPayment, setLastPayment] = useState(null);
-  const [nextDueDate, setNextDueDate] = useState(null);
-  const [missedPayments, setMissedPayments] = useState([]);
-  const [statusFilter, setStatusFilter] = useState('All');
-
   const reportRef = useRef();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await axios.get('/api/consumer/loans');
-        const { loans, repayments = [], user, creditScore } = res.data;
+        const loans = res.data.loans;
+        const repayments = res.data.repayments || [];
 
         setLoans(loans);
         setRepayments(repayments);
-        setUserInfo(user);
-        setScore(creditScore || null);
 
-        if (repayments.length > 0) {
-          const latest = repayments[repayments.length - 1];
-          setLastPayment(latest);
+        // Calculate dynamic credit score
+        const totalLoanAmount = loans.reduce((acc, loan) => acc + loan.amount, 0);
+        const totalPaid = repayments.reduce((acc, r) => acc + r.amount, 0);
+        let creditScore = 300;
+
+        if (totalLoanAmount > 0) {
+          const paymentRatio = totalPaid / totalLoanAmount;
+          creditScore += Math.min(550, Math.round(paymentRatio * 550)); // Cap score to 850
+        } else {
+          creditScore = 500; // Default score when no loans
         }
 
-        // Next due & missed payments
-        const today = new Date();
-        const futureLoans = loans.filter(l => new Date(l.dueDate) > today && l.status !== 'paid');
-        const overdueLoans = loans.filter(l => new Date(l.dueDate) < today && l.status !== 'paid');
-
-        if (futureLoans.length > 0) {
-          const sorted = futureLoans.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
-          setNextDueDate(sorted[0].dueDate);
-        }
-        setMissedPayments(overdueLoans);
-
-        // Fallback score if backend fails
-        if (!creditScore) {
-          const totalLoanAmount = loans.reduce((acc, loan) => acc + loan.amount, 0);
-          const totalPaid = repayments.reduce((acc, r) => acc + r.amount, 0);
-          let fallbackScore = 300;
-          if (totalLoanAmount > 0) {
-            const paymentRatio = totalPaid / totalLoanAmount;
-            fallbackScore += Math.min(550, Math.round(paymentRatio * 550));
-          } else {
-            fallbackScore = 500;
-          }
-          setScore(fallbackScore);
-        }
-
+        setScore(creditScore);
       } catch (err) {
         console.error('Error fetching credit report:', err);
       }
     };
-
     fetchData();
   }, []);
 
+  // Calculate payment summary
   const totalLoanAmount = loans.reduce((acc, loan) => acc + loan.amount, 0);
   const totalPaid = repayments.reduce((acc, r) => acc + r.amount, 0);
   const remainingBalance = totalLoanAmount - totalPaid;
@@ -77,16 +48,6 @@ const CreditReport = () => {
   repayments.forEach(r => {
     methodCounts[r.method] = (methodCounts[r.method] || 0) + 1;
   });
-
-  const getMonthlyData = () => {
-    const monthMap = {};
-    repayments.forEach(r => {
-      const date = new Date(r.date);
-      const key = `${date.getMonth() + 1}/${date.getFullYear()}`;
-      monthMap[key] = (monthMap[key] || 0) + r.amount;
-    });
-    return Object.entries(monthMap).map(([month, amount]) => ({ month, amount }));
-  };
 
   const handleDownloadPDF = () => {
     const element = reportRef.current;
@@ -100,81 +61,25 @@ const CreditReport = () => {
     html2pdf().set(opt).from(element).save();
   };
 
-  const filteredLoans = loans
-    .filter(loan =>
-      statusFilter === 'All' ||
-      (statusFilter === 'overdue' && new Date(loan.dueDate) < new Date() && loan.status !== 'paid') ||
-      loan.status.toLowerCase() === statusFilter.toLowerCase()
-    )
-    .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
-
   return (
     <div className="credit-report-container">
       <div ref={reportRef} className="credit-report">
         <h1>Credit Report</h1>
 
         <section>
-          <h2>1. Consumer Details</h2>
-          <p><strong>Full Name:</strong> {userInfo.name}</p>
-          <p><strong>Email:</strong> {userInfo.email}</p>
-        </section>
-
-        <section>
-          <h2>2. Credit Score</h2>
+          <h2>1. Credit Score</h2>
           <p>
             Your current credit score is: <strong>{score !== null ? score : 'Loading...'}</strong>
+          </p>
+          <p>
+            This score reflects your creditworthiness based on your loan and repayment behavior. A higher score indicates a good history of timely payments.
           </p>
         </section>
 
         <section>
-          <h2>3. Last Payment</h2>
-          {lastPayment ? (
-            <>
-              <p><strong>Amount:</strong> ${lastPayment.amount.toFixed(2)}</p>
-              <p><strong>Method:</strong> {lastPayment.method}</p>
-              <p><strong>Date:</strong> {new Date(lastPayment.date).toLocaleDateString()}</p>
-            </>
-          ) : (
-            <p>No payments have been made yet.</p>
-          )}
-        </section>
-
-        <section>
-          <h2>4. Upcoming & Missed Payments</h2>
-          {nextDueDate ? (
-            <p><strong>Next Payment Due:</strong> {new Date(nextDueDate).toLocaleDateString()}</p>
-          ) : (
-            <p>No upcoming payments.</p>
-          )}
-          {missedPayments.length > 0 ? (
-            <>
-              <p><strong>Missed Payments:</strong></p>
-              <ul>
-                {missedPayments.map(m => (
-                  <li key={m._id}>
-                    {m.type} - ${m.amount.toFixed(2)} - Due {new Date(m.dueDate).toLocaleDateString()}
-                  </li>
-                ))}
-              </ul>
-            </>
-          ) : (
-            <p>No missed payments.</p>
-          )}
-        </section>
-
-        <section>
-          <h2>5. Loan History</h2>
-          <div style={{ marginBottom: '1rem' }}>
-            <label>Status Filter: </label>
-            <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}>
-              <option value="All">All</option>
-              <option value="paid">Paid</option>
-              <option value="unpaid">Unpaid</option>
-              <option value="overdue">Overdue</option>
-            </select>
-          </div>
-          {filteredLoans.length === 0 ? (
-            <p>No matching loans found.</p>
+          <h2>2. Loan History</h2>
+          {loans.length === 0 ? (
+            <p>No loan records found.</p>
           ) : (
             <table className="report-table">
               <thead>
@@ -187,7 +92,7 @@ const CreditReport = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredLoans.map(loan => (
+                {loans.map((loan) => (
                   <tr key={loan._id}>
                     <td>{loan.type}</td>
                     <td>${loan.amount.toFixed(2)}</td>
@@ -202,7 +107,7 @@ const CreditReport = () => {
         </section>
 
         <section>
-          <h2>6. Repayment History</h2>
+          <h2>3. Repayment History</h2>
           {repayments.length === 0 ? (
             <p>No repayment history available.</p>
           ) : (
@@ -230,7 +135,7 @@ const CreditReport = () => {
         </section>
 
         <section>
-          <h2>7. Payment Summary</h2>
+          <h2>4. Payment Summary</h2>
           <p><strong>Total Loan Amount:</strong> ${totalLoanAmount.toFixed(2)}</p>
           <p><strong>Total Paid:</strong> ${totalPaid.toFixed(2)}</p>
           <p><strong>Remaining Balance:</strong> ${remainingBalance.toFixed(2)}</p>
@@ -242,45 +147,7 @@ const CreditReport = () => {
         </section>
 
         <section>
-          <h2>8. Visual Summary</h2>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem' }}>
-            <div>
-              <h3>Paid vs Remaining</h3>
-              <PieChart width={300} height={250}>
-                <Pie
-                  data={[
-                    { name: 'Paid', value: totalPaid },
-                    { name: 'Remaining', value: remainingBalance }
-                  ]}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={80}
-                  label
-                >
-                  <Cell fill="#82ca9d" />
-                  <Cell fill="#f08080" />
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </div>
-
-            <div>
-              <h3>Monthly Payments</h3>
-              <BarChart width={400} height={250} data={getMonthlyData()}>
-                <XAxis dataKey="month" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="amount" fill="#8884d8" />
-              </BarChart>
-            </div>
-          </div>
-        </section>
-
-        <section>
-          <h2>9. Summary</h2>
+          <h2>5. Summary</h2>
           <p>
             This report helps you track your financial activity and credit behavior. It is useful when applying for future loans or verifying your financial reliability.
           </p>

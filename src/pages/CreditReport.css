@@ -9,39 +9,6 @@
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
-  /* CreditReport.css */
-.credit-report-container {
-  padding: 2rem;
-}
-.credit-report {
-  background: #fff;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-.report-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 1rem;
-}
-.report-table th, .report-table td {
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-}
-.print-btn {
-  margin-top: 1rem;
-  padding: 0.75rem 1.5rem;
-  font-weight: bold;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-.print-btn:hover {
-  background-color: #45a049;
-}
-
   
   .credit-report {
     background-color: #fff;

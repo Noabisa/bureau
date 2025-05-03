@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 
 const PaymentSchema = new mongoose.Schema({
-  loanId: { type: mongoose.Schema.Types.ObjectId, ref: 'Loan', required: true },
+  loan: { type: mongoose.Schema.Types.ObjectId, ref: 'Loan', required: true },
+  consumer: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  lender: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Assume lender is a User as well
   amount: { type: Number, required: true },
   method: { type: String, required: true },
-  paymentDate: { type: Date, required: true },
+  paidAt: { type: Date, default: Date.now },
 });
 
-const Payment = mongoose.model('Payment', PaymentSchema);
-
-module.exports = Payment;
+module.exports = mongoose.model('Payment', PaymentSchema);
